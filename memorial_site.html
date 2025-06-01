@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Loving Memory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .main-page {
+            display: block;
+        }
+
+        .memorial-page {
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .choices-container {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .choice-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            max-width: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .choice-card:hover::before {
+            left: 100%;
+        }
+
+        .choice-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .choice-image {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            clip-path: circle(80px at center); /* smaller visible circle */
+        }
+
+        .choice-card:hover .choice-image {
+            border-color: #3498db;
+        }
+
+        .choice-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .choice-subtitle {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #2c3e50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .memorial-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        .memorial-title {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .memorial-dates {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .life-story {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            text-align: justify;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .carousel-slides-wrapper {
+            width: 100%;
+        }
+
+        .carousel-buttons {
+            text-align: center;
+            padding: 1rem 0 0; /* padding-top to separate buttons from images */
+            padding-bottom: 1.3rem;
+            background: transparent;
+        }
+
+        .carousel-slide {
+            display: none;
+            position: relative;
+        }
+
+        .carousel-slide.active {
+            display: block;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .carousel-nav {
+            position: relative;  /* no longer absolute */
+            display: inline-block;
+            background: rgba(255,255,255,0.8);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            margin: 0 1rem; /* spacing between buttons */
+            vertical-align: middle;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(255,255,255,0.95);
+            transform: scale(1.1);
+        }
+
+
+        .carousel-prev, .carousel-next {
+            position: relative; /* override previous absolute */
+            left: auto;
+            right: auto;
+        }
+
+        .memorial-quote {
+            text-align: center;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-left: 4px solid #3498db;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 0 10px 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .header p,
+            .memorial-dates,
+            .memorial-quote {
+                font-size: 1rem;
+            }
+
+            .choice-title {
+                font-size: 1.3rem;
+            }
+
+            .choice-subtitle {
+                font-size: 1rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .life-story {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .carousel-slide img {
+                height: auto;
+                max-height: 300px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Selection Page -->
+        <div id="mainPage" class="main-page">
+            <div class="header">
+                <h1>In Liefdevolle Herinnering</h1>
+                <p>Ter ere van de levens die ons hart hebben geraakt</p>
+            </div>
+                <div class="choices-container">
+                    <div class="choice-card" onclick="showMemorial('grandpa')">
+                    <img src="images/1.jpg"Grandpa" class="choice-image">
+                    <h2 class="choice-title">François Vereecken</h2>
+                    <p class="choice-subtitle">Een erfenis van kracht en goedheid</p>
+                </div>
+                <div class="choice-card" onclick="showMemorial('grandma')">
+                    <img src="images/zwart.jpg" alt="Grandma" class="choice-image">
+                    <h2 class="choice-title">Mariette De Brandt</h2>
+                    <p class="choice-subtitle">(nog niet uitgewerkt)</p>
+                    <p class="choice-subtitle">Een leven vol wandelen, liefde en wijsheid</p>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <!-- Grandpa Memorial Page -->
+        <div id="grandpaPage" class="memorial-page">
+            <button class="back-button" onclick="showMain()">←</button>
+            
+            <div class="memorial-header">
+                <h1 class="memorial-title">François Vereecken</h1>
+                <p class="memorial-dates">1937 - 2025</p>
+            </div>
+
+           <div class="carousel-container" id="grandpaCarousel">
+                <div class="carousel-slides-wrapper">
+                    <!-- dynamically inserted slides will go here -->
+                </div>
+                <div class="carousel-buttons">
+                    <button class="carousel-nav carousel-prev" onclick="changeSlide('grandpa', -1)">‹</button>
+                    <button class="carousel-nav carousel-next" onclick="changeSlide('grandpa', 1)">›</button>
+                </div>
+            </div>
+            <div class="memorial-quote">
+                "De wijsheid van een vader weerklinkt door de generaties heen."
+            </div>
+            <div class="content-section">
+                <div class="life-story">
+                    <h3>Een kleine historie over een eenvoudige, sterke man</h3><br>
+
+                    <p>Zoon van Germaine en Alfons, geboren te Moorsel op Waver.
+                        <br> Geboren in 1937 en de Eerste Wereldoorlog meegemaakt als jonge knaap in een gezin met 5 kinderen.
+                        <br> Hij ging naar de vakschool in Aalst, vermoedelijk had je met interesse in mechanica.
+                        <br> Na de studies, op 24/10/55 trad hij in dienst als lasser bij Louis Vermoesen in Moorsel.
+                        <br> Dan passeerde ook nog even de legerdienst in Duitsland.
+                        <br> Hij huwde in 1963 met Mariette De Brandt en ze begonnen al heel snel aan kindjes.
+                        <br> Het eerste dochtertje, Martinneken, overleed jammer genoeg na 7 maanden.
+                        <br> Later volgden nog 3 gezonde kinderen: Luc, Martine & Marc.
+                    </p>
+
+                    <br><br>
+
+                    <p>Francois werd zelfstandig loodgieter/chauffagist en Mariette besloot om huisvrouw te worden, ze had haar handen vol in het nieuwgebouwd huis en met de 3 kinderen.</p>
+
+                    <br>
+
+                    <p>Mariette en Francois waren een eerder rustig koppel met een toch wel vrij hobbelig parcours doorheen hun huwelijksleven, hard werkend en sociaal geëngageerd te Meldert.</p>
+
+                    <br>
+
+                    <p>Ze werden niet gespaard van moeilijke momenten en hindernissen, zowel bij hun eigen ouders als in het gezin.</p>
+
+                    <br>
+
+                    <p>Als zelfstandige was het hard werken en had hij weinig vrije tijd, was voetbalfan van de ploeg in Meldert, sommige jaren een skireis met zus en vrienden en wat uitstappen of reisjes met de familie.</p>
+
+                    <br>
+
+                    <p>Het bedrijf werd bij naderend pensioen overgedragen aan de jongste zoon en nadien kon meer tijd vrijgemaakt worden voor de kleinkinderen, nieuwe hobbies en de wandelsport.</p>
+
+                    <br>
+
+                    <p>Zijn favoriete muziek was eerder klassiek, opera en operettes.</p>
+
+                    <br><br>
+
+                    <p>Zijn laatste 4 levensjaren waren heel moeilijk na 3 ernstige herseninfarcten te wijten aan Covid-vaccinatie. Zijn echtgenote verzorgde hem nog totdat zij zelf eerder stierf aan de ziekte van Alzheimer.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grandma Memorial Page -->
+        <div id="grandmaPage" class="memorial-page">
+            <button class="back-button" onclick="showMain()">← Back</button>
+            
+            <div class="memorial-header">
+                <h1 class="memorial-title">Mariette De Brandt</h1>
+                <p class="memorial-dates">1940 - 2024</p>
+            </div>
+
+             <div class="content-section">
+                <div class="carousel-container" id="grandmaCarousel">
+                    <div class="carousel-slide active">
+                        <img src="images/2.jpg" alt="Grandma Memory 1">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/3.jpg" alt="Grandma Memory 2">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://via.placeholder.com/600x400/e8f4fd/3498db?text=Grandma+Photo+3" alt="Grandma Memory 3">
+                    </div>
+                    
+                    <div class="carousel-buttons">
+                        <button class="carousel-nav carousel-prev" onclick="changeSlide('grandpa', -1)">‹</button>
+                        <button class="carousel-nav carousel-next" onclick="changeSlide('grandpa', 1)">›</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="life-story">
+                    <p>Mooi tekstje over meme'ke</p>
+                    
+                    <p>Levensverhaal?</p>
+                    
+                    <p>Afsluiter</p>
+                </div>
+            </div>
+
+            <div class="memorial-quote">
+                "De liefde van een moeder leeft voor altijd voort in ons hart."
+            </div>
+           
+        </div>
+    </div>
+
+    <script>
+
+         const slideCount = 46;
+        const carouselContainer = document.getElementById("grandpaCarousel");
+
+        for (let i = 1; i <= slideCount; i++) {
+            // Create slide
+            const slide = document.createElement("div");
+            slide.className = "carousel-slide" + (i === 1 ? " active" : "");
+
+            const img = document.createElement("img");
+            img.src = `images/${i}.jpg`;
+            img.alt = `Grandpa Memory ${i}`;
+
+            slide.appendChild(img);
+            carouselContainer.insertBefore(slide, carouselContainer.children[carouselContainer.children.length - 2]); // before buttons
+        }
+        let currentSlideIndex = {
+            grandma: 1,
+            grandpa: 1
+        };
+
+        function showMemorial(person) {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById(person + 'Page').style.display = 'block';
+        }
+
+        function showMain() {
+            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('grandmaPage').style.display = 'none';
+            document.getElementById('grandpaPage').style.display = 'none';
+        }
+
+        function changeSlide(person, direction) {
+            const slides = document.querySelectorAll(`#${person}Page .carousel-slide`);
+            
+            slides[currentSlideIndex[person] - 1].classList.remove('active');
+            
+            currentSlideIndex[person] += direction;
+            
+            if (currentSlideIndex[person] > slides.length) {
+                currentSlideIndex[person] = 1;
+            }
+            if (currentSlideIndex[person] < 1) {
+                currentSlideIndex[person] = slides.length;
+            }
+            
+            slides[currentSlideIndex[person] - 1].classList.add('active');
+        }
+
+        function currentSlide(person, slideNumber) {
+            const slides = document.querySelectorAll(`#${person}Page .carousel-slide`);
+            
+            slides[currentSlideIndex[person] - 1].classList.remove('active');
+            
+            currentSlideIndex[person] = slideNumber;
+            
+            slides[currentSlideIndex[person] - 1].classList.add('active');
+        }
+
+        // Auto-advance carousel every 8 seconds
+        setInterval(() => {
+            const activePage = document.querySelector('.memorial-page[style*="block"]');
+            if (activePage) {
+                const person = activePage.id.includes('grandma') ? 'grandma' : 'grandpa';
+                changeSlide(person, 1);
+            }
+        }, 8000);
+    </script>
+</body>
+</html>
