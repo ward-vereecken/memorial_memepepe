@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In Loving Memory</title>
@@ -34,7 +35,6 @@
 
         .header {
             text-align: center;
-            margin-bottom: 3rem;
             padding: 2rem 0;
         }
 
@@ -93,6 +93,25 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
+        .choice-image-grandma {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            clip-path: circle(80px at center); /* smaller visible circle */
+        }
+
+        .choice-image-grandma img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            transform: scale(1.2); /* zoom in the image */
+        }
+
         .choice-image {
             width: 180px;
             height: 180px;
@@ -117,6 +136,18 @@
         .choice-subtitle {
             color: #7f8c8d;
             font-style: italic;
+        }
+
+        .memorial-photo {
+        text-align: center;
+        }
+
+        .memorial-photo img {
+        max-width: 300px;
+        border-radius: 20px;
+        filter: grayscale(100%);
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+        border: 4px solid white;
         }
 
         .back-button {
@@ -295,16 +326,21 @@
         <div id="mainPage" class="main-page">
             <div class="header">
                 <h1>In Liefdevolle Herinnering</h1>
-                <p>Ter ere van de levens die ons hart hebben geraakt</p>
+                <p>Ter ere van de levens die ons hart hebben geraakt:</p>
+            </div>
+            <div class="memorial-photo">
+            <img src="images/grandma/3.jpg" alt="Mariette De Brandt">
             </div>
                 <div class="choices-container">
                     <div class="choice-card" onclick="showMemorial('grandpa')">
-                    <img src="images/1.jpg"Grandpa" class="choice-image">
+                    <img src="images/1.jpg" class="choice-image">
                     <h2 class="choice-title">François Vereecken</h2>
                     <p class="choice-subtitle">Een erfenis van kracht en goedheid</p>
                 </div>
                 <div class="choice-card" onclick="showMemorial('grandma')">
-                    <img src="images/zwart.jpg" alt="Grandma" class="choice-image">
+                    <div class="choice-image-grandma">
+                        <img src="images/meme.jpg" alt="Grandma">
+                    </div>
                     <h2 class="choice-title">Mariette De Brandt</h2>
                     <p class="choice-subtitle">(nog niet uitgewerkt)</p>
                     <p class="choice-subtitle">Een leven vol wandelen, liefde en wijsheid</p>
@@ -340,7 +376,7 @@
                     <h3>Een kleine historie over een eenvoudige, sterke man</h3><br>
 
                     <p>Zoon van Germaine en Alfons, geboren te Moorsel op Waver.
-                        <br> Geboren in 1937 en de Eerste Wereldoorlog meegemaakt als jonge knaap in een gezin met 5 kinderen.
+                        <br> Geboren in 1937 en de Tweede Wereldoorlog meegemaakt als jonge knaap in een gezin met 5 kinderen.
                         <br> Hij ging naar de vakschool in Aalst, vermoedelijk had je met interesse in mechanica.
                         <br> Na de studies, op 24/10/55 trad hij in dienst als lasser bij Louis Vermoesen in Moorsel.
                         <br> Dan passeerde ook nog even de legerdienst in Duitsland.
@@ -349,7 +385,7 @@
                         <br> Later volgden nog 3 gezonde kinderen: Luc, Martine & Marc.
                     </p>
 
-                    <br><br>
+                    <br>
 
                     <p>Francois werd zelfstandig loodgieter/chauffagist en Mariette besloot om huisvrouw te worden, ze had haar handen vol in het nieuwgebouwd huis en met de 3 kinderen.</p>
 
@@ -373,7 +409,7 @@
 
                     <p>Zijn favoriete muziek was eerder klassiek, opera en operettes.</p>
 
-                    <br><br>
+                    <br>
 
                     <p>Zijn laatste 4 levensjaren waren heel moeilijk na 3 ernstige herseninfarcten te wijten aan Covid-vaccinatie. Zijn echtgenote verzorgde hem nog totdat zij zelf eerder stierf aan de ziekte van Alzheimer.</p>
                 </div>
@@ -382,7 +418,7 @@
 
         <!-- Grandma Memorial Page -->
         <div id="grandmaPage" class="memorial-page">
-            <button class="back-button" onclick="showMain()">← Back</button>
+            <button class="back-button" onclick="showMain()">←</button>
             
             <div class="memorial-header">
                 <h1 class="memorial-title">Mariette De Brandt</h1>
@@ -391,35 +427,79 @@
 
              <div class="content-section">
                 <div class="carousel-container" id="grandmaCarousel">
-                    <div class="carousel-slide active">
-                        <img src="images/2.jpg" alt="Grandma Memory 1">
+                    <div class="carousel-slides-wrapper">
+                        <!-- dynamically inserted slides will go here -->
                     </div>
-                    <div class="carousel-slide">
-                        <img src="images/3.jpg" alt="Grandma Memory 2">
-                    </div>
-                    <div class="carousel-slide">
-                        <img src="https://via.placeholder.com/600x400/e8f4fd/3498db?text=Grandma+Photo+3" alt="Grandma Memory 3">
-                    </div>
-                    
                     <div class="carousel-buttons">
-                        <button class="carousel-nav carousel-prev" onclick="changeSlide('grandpa', -1)">‹</button>
-                        <button class="carousel-nav carousel-next" onclick="changeSlide('grandpa', 1)">›</button>
+                        <button class="carousel-nav carousel-prev" onclick="changeSlide('grandma', -1)">‹</button>
+                        <button class="carousel-nav carousel-next" onclick="changeSlide('grandma', 1)">›</button>
                     </div>
                 </div>
             </div>
-
-            <div class="content-section">
-                <div class="life-story">
-                    <p>Mooi tekstje over meme'ke</p>
-                    
-                    <p>Levensverhaal?</p>
-                    
-                    <p>Afsluiter</p>
-                </div>
-            </div>
-
             <div class="memorial-quote">
                 "De liefde van een moeder leeft voor altijd voort in ons hart."
+            </div>
+            <div class="content-section">
+                <div class="life-story">
+                    <h3>Een kleine history over een eenvoudige maar sterke dame </h3><br>
+
+                    <p>
+                        Dochter van Margrit en Frans van Pennekes (volkse bijnaam), ook nog Frans de Gazetteman.
+                        <br> Geboren 3 weken voordat ‘den Duits’ België binnenviel, volgde een hele moeilijke periode waarin eten schaars was en mensen in angst leefden om wat er zou komen.
+                        <br> Tijdens de oorlog werd papa Frans gemobiliseerd en was het allemaal niet zo eenvoudig tijdens Mariette’s eerste levensjaren.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Uit de periode na de oorlog en de schooltijd hebben we helaas geen info.
+                        <br> Ze was een vlijtige studente in de studierichting Handel en na haar humaniora ging ze aan de slag bij De Standaard in Brussel, als dactylo.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Ze huwde in 1963 met Francois Vereecken en ze begonnen al heel snel aan kindjes.
+                        <br> Het eerste dochtertje, Martinneken, overleed jammer genoeg na 7 maanden.
+                        <br> Later volgden nog 3 gezonde kinderen: Luc, Martine & Marc.
+                    </p>
+
+                    <p>
+                        Francois werd zelfstandig loodgieter en Mariette besloot om huisvrouw te worden, ze had haar handen vol in het nieuwbouwhuis en met de kinderen.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Mariette en Francois waren een eerder rustig koppel met een toch wel vrij hobbelig parcours doorheen hun huwelijksleven, wel hard werkend en ook sociaal geëngageerd te Meldert.
+                    </p>
+
+                    <p>
+                        Ze werden niet gespaard van moeilijke momenten en hindernissen, zowel bij haar ouders als in hun eigen gezin.
+                        <br> Maar ze was een doorbijter en hield vol om er toch nog steeds het beste van te maken.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Mariette was ook een echte verhalenverteller in het Mellerts dialect; ze kende veel mensen met naam en bijnaam te Meldert.
+                        <br> Zo heeft ze ook een aantal sappige verhalen laten optekenen in het Volksverhalen-boek van Arnold Van de Perre.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Haar ‘lang leven’ was wandelen, ze volbracht vele keren de Dodentocht en de 100 km van Nacht van Vlaanderen.
+                        <br> Maar liefst 75 keer trok ze op bedevaart naar de Zwarte Madonna te Halle.
+                        <br> Elke zondag was ze steevast op pad met kleinzoon Jani; alles bij elkaar heeft ze de hele aardbol rondgewandeld en kreeg daar van de wandelfederatie een diploma voor 40.000 km.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Mariette was een lieve, eenvoudige vrouw, zeer gelovig ook en katholiek praktiserend, steeds in de weer voor haar man, haar kinderen, buren en vrienden.
+                    </p>
+                </div>
             </div>
            
         </div>
@@ -427,20 +507,32 @@
 
     <script>
 
-         const slideCount = 46;
-        const carouselContainer = document.getElementById("grandpaCarousel");
+         // Grandpa
+        const grandpaSlideCount = 46;
+        const grandpaCarouselWrapper = document.querySelector("#grandpaCarousel .carousel-slides-wrapper");
 
-        for (let i = 1; i <= slideCount; i++) {
-            // Create slide
+        for (let i = 1; i <= grandpaSlideCount; i++) {
             const slide = document.createElement("div");
             slide.className = "carousel-slide" + (i === 1 ? " active" : "");
-
             const img = document.createElement("img");
             img.src = `images/${i}.jpg`;
             img.alt = `Grandpa Memory ${i}`;
-
             slide.appendChild(img);
-            carouselContainer.insertBefore(slide, carouselContainer.children[carouselContainer.children.length - 2]); // before buttons
+            grandpaCarouselWrapper.appendChild(slide);
+        }
+
+        // Grandma
+        const grandmaSlideCount = 25; // change this to how many photos you have
+        const grandmaCarouselWrapper = document.querySelector("#grandmaCarousel .carousel-slides-wrapper");
+
+        for (let i = 1; i <= grandmaSlideCount; i++) {
+            const slide = document.createElement("div");
+            slide.className = "carousel-slide" + (i === 1 ? " active" : "");
+            const img = document.createElement("img");
+            img.src = `images/grandma/${i}.jpg`;
+            img.alt = `Grandma Memory ${i}`;
+            slide.appendChild(img);
+            grandmaCarouselWrapper.appendChild(slide);
         }
         let currentSlideIndex = {
             grandma: 1,
